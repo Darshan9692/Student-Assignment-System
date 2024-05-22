@@ -1,0 +1,36 @@
+version: '3'
+services:
+  nodejs-microservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:5000"
+    depends_on:
+      - mysql-db
+    environment:
+      MYSQL_HOST: mysql-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 9692
+      MYSQL_DATABASE: university
+    volumes:
+      - ./app:/app
+    networks:
+      - mynetwork
+
+  mysql-db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 9692
+      MYSQL_DATABASE: university
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 9692
+    volumes:
+      - ./data:/var/lib/mysql
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
